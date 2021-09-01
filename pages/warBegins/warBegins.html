@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../globalStyles.css">
+  <link rel="stylesheet" href="./warBegins.css">
+  <title>Javascript W[arr]ior ⚔</title>
+</head>
+<body>
+  <header>
+    <button class="audio-toggle">🔈</button>
+    <h1 class="primary-header">
+      Javascript W<span class="arr-emph">[arr]</span>ior ⚔
+    </h1>
+  </header>
+  <main class="story">
+    <section class="story__wrapper">
+      <button class="story__control story__control--inactive" data-direction="back">
+        ⟸
+      </button>
+      <article class="story__desc">
+        <p class="story__desc-text">
+
+        </p>
+        <a 
+          href="../adventure/adventure.html" 
+          class="story__desc-start primary-btn primary-btn--intro primary-btn--inactive"
+        >
+          Start Battle
+        </a>
+      </article>
+      <button class="story__control"  data-direction="forwards">
+        ⟹
+      </button>
+    </section>
+    <audio src="../../assets/audio/bensound-evolution.mp3" loop></audio>
+    <script src="../../utils/audioControl.js"></script>
+    <script src="../../assets/data/story.js"></script>
+    <script src="./warBegins.js"></script>
+  </main>
+</body>
+</html>

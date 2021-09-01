@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../globalStyles.css">
+  <link rel="stylesheet" href="./bossFight.css">
+  <title>Javascript W[arr]ior ⚔</title>
+</head>
+<body>
+  <header>
+    <button class="audio-toggle">🔈</button>
+    <div class="header-container">
+      <h1 class="primary-header">
+        Javascript W<span class="arr-emph">[arr]</span>ior ⚔
+      </h1>
+      <h1 class="primary-header">
+        The Second D<span class="arr-emph">[arr]</span>kness
+      </h1>
+    </div>
+  </header>
+  <main class="map-container">
+    <section class="messages">
+      <h4 class="messages__header"><span class="arr-emph">[arr]</span>thur:</h4>
+      <p class="messages__detail">
+        Show Yourself!.
+      </p>
+    <img class="messages__hero-image" src="../../assets/images/knight.png" alt="hero">
+    </section>
+    <div class="map">
+      <div class="enemy__health">
+        Health: <span class="enemy__health-bar"></span>
+      </div>
+      <div class="hero-sprite">
+        <div class="hero-icon">!</div>
+      </div>
+      <div class="villain-sprite"></div>
+      <div class="monster-sprite"></div>
+      <div class="final-attack"></div>
+      <img 
+        class="enemy-attack"
+        src="../../assets/sprites/stage/enemyAttack.png" 
+        alt="enemy attack"
+      >
+    </div>
+    <section class="controls">
+      <div class="battle-log__health">💖💖💖💖💖</div>
+      <section class="enemy-data">
+        <p class="enemy-data__content">
+        </p>
+      </section>
+      <div class="battle-log__attack">
+        <div class="battle-log__challenge-wrapper">
+          <div class="battle-log__challenge"></div>
+        </div>
+      </div>
+    </section>
+    <aside class="game-over">
+      <h2>Game Over</h2>
+      <a class="primary-btn" href="../bossFight/bossFight.html">Retry?</a>
+    </aside>
+    <audio src="../../assets/audio/bensound-evolution.mp3" loop></audio>
+  </main>
+  <script src="../../utils/repeat.js"></script>
+  <script src="../../assets/data/challenge.js"></script>
+  <script src="../../assets/data/monster.js"></script>
+  <script src="../../assets/data/story.js"></script>
+  <script src="./bossInteractions.js"></script>
+  <script src="../../assets/data/character.js"></script>
+  <script src="./bossFight.js"></script>
+  <script src="../../utils/audioControl.js"></script>
+</body>
+</html>

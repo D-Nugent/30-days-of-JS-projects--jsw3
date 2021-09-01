@@ -1,0 +1,105 @@
+:root{
+  --modal-shadow: 4px 4px 8px rgba(0,0,0,.25);
+  --modal-color: rgba(240, 248, 255,.7);
+  --health-color: green;
+  --health-val: 100%;
+}
+
+/* Global CSS Reset */
+html, body, *, *::before, *::after {
+  box-sizing: border-box;
+  font-family: fantasy, cursive, 'Courier New', Courier, monospace;
+  letter-spacing: .2rem;
+  user-select: none;
+}
+
+html {
+  height: 100vh;
+}
+
+body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* Generic Styling */
+
+.arr-emph {
+  font-weight: 100;
+  font-size: .8em;
+  color: rgba(0, 0, 0, .5);
+}
+
+.arr-emph--title{
+  margin-left: 8px;
+}
+
+/* Header Styling */
+
+header{
+  display: flex;
+  justify-content: center;
+  position: relative;
+  flex-grow: .1;
+  padding: 1% 0;
+}
+
+.primary-header{
+  font-size: 3rem;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Button Styling */
+
+.primary-btn {
+  text-decoration: none;
+  border: 2px solid black;
+  color: black;
+  padding: 1% 2%;
+  box-shadow: var(--modal-shadow);
+  position: relative;
+  top: -4px;
+  left: -4px;
+}
+
+.primary-btn:hover{
+  cursor: pointer;
+}
+
+.primary-btn:active{
+  top: 0;
+  left: 0;
+  box-shadow: none;
+}
+
+.primary-btn--intro {
+  background-color: aliceblue;
+  opacity: .7;
+  box-shadow: 4px 4px 8px rgba(240, 248, 255,.5);
+  font-size: 1.5rem;
+}
+
+.primary-btn--inactive{
+  visibility: hidden;
+}
+
+
+/* Audio Styling */
+.audio-toggle{
+  position: absolute;
+  left: 1%;
+  font-size: 2rem;
+  margin: 0;
+  text-shadow: var(--modal-shadow);
+  border: none;
+  background: none;
+}
+
+.audio-toggle:hover{
+  cursor: pointer;
+}

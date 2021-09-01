@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../globalStyles.css">
+  <link rel="stylesheet" href="./adventure.css">
+  <title>Javascript W[arr]ior ⚔</title>
+</head>
+<body>
+  <header>
+    <button class="audio-toggle">🔈</button>
+    <div class="header-container">
+      <h1 class="primary-header">
+        Javascript W<span class="arr-emph">[arr]</span>ior ⚔
+      </h1>
+      <h1 class="primary-header">
+        The Sword of <span class="arr-emph arr-emph--title"> [arr]</span>gus
+      </h1>
+    </div>
+  </header>
+  <main class="map-container">
+    <section class="messages">
+      <h4 class="messages__header">[arr]thur:</h4>
+      <p class="messages__detail">
+        It may be just a myth... but I have to find out. Besides, I sense something in the depths.
+      </p>
+    <img class="messages__hero-image" src="../../assets/images/knight.png" alt="hero">
+    </section>
+    <div class="map">
+      <div class="map__block map__block--1"></div>
+      <div class="map__block map__block--2"></div>
+      <div class="map__block map__block--3"></div>
+      <div class="map__block map__block--4"></div>
+      <div class="map__block map__block--5"></div>
+      <div class="map__block map__block--6"></div>
+      <div class="map__block map__block--7"></div>
+      <div class="map__block map__block--8"></div>
+      <div class="map__block map__block--9"></div>
+      <div class="map__block map__block--10"></div>
+      <div class="map__block map__block--11"></div>
+      <div class="map__block map__block--12"></div>
+      <div class="map__block map__block--13"></div>
+      <div class="map__block map__block--14"></div>
+      <div class="hero-sprite">
+        <div class="hero-icon">!</div>
+      </div>
+    </div>
+    <section class="controls">
+      <h4 class="controls__heading">Controls</h4>
+      <p class="controls__key --up">⇧</p>
+      <div class="controls__left-to-right">
+        <p class="controls__key --left">⇦</p>
+        <p class="controls__key --down">⇩</p>
+        <p class="controls__key --right">⇨</p>
+      </div>
+      <p class="controls__key --space">Spacebar</p>
+    </section>
+    <aside class="battle-window">
+      <div class="battle-window__status">
+        <h3 class="battle-window__messages">
+          It's super effective!
+        </h3>
+      </div>
+      <p class="enemy-data">
+        Enemy Data
+      </p>
+      <div class="battle-window__sprites">
+        <div class="enemy">
+          <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/demon-feather.png" alt="enemy"> -->
+           <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/ghoul.png" alt="enemy"> -->
+          <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/giant-leech.png" alt="enemy"> -->
+          <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/werewolf.png" alt="enemy"> -->
+          <img class="enemy__sprite" src="../../assets/sprites/monster/hydra.png" alt="enemy">
+          <div class="enemy__health">
+            <div class="enemy__health-bar"></div>
+          </div>
+        </div>
+        <div class="player">
+          <img src="../../assets/sprites/hero/left-turn.png" alt="player" class="player__sprite">
+          <div class="player__health">
+            <div class="player__health-bar"></div>
+          </div>
+        </div>
+      </div>
+      <section class="battle-menu">
+        <div class="battle-menu__actions">
+          <article class="battle-menu__primary">
+            <button class="battle-menu__option">
+            Attack
+          </button>
+          <button class="battle-menu__option">
+            Skill
+          </button>
+          <button class="battle-menu__option">
+            Item
+          </button>
+          <button class="battle-menu__option">
+            Run
+          </button>
+        </article>
+        <article class="battle-menu__secondary">
+          <button class="battle-menu__option">
+            Potion
+          </button>
+          <button class="battle-menu__option">
+            Restore
+          </button>
+        </article>
+      </div>
+      <article class="battle-menu__details">
+        <h4 class="battle-menu__effect-name">
+          Potion
+        </h4>
+        <p class="battle-menu__effect-description">
+          Restores your health by 60hp!
+        </p>
+        <p class="battle-menu__method-details">
+          Does stuff...
+        </p>
+      </article>        
+      </section>
+    </aside>
+    <audio src="../../assets/audio/bensound-ofeliasdream.mp3" loop></audio>
+  </main>
+  <script src="./interactions.js"></script>
+  <script src="../../assets/data/character.js"></script>
+  <script src="./adventure.js"></script>
+  <script src="../../utils/audioControl.js"></script>
+</body>
+</html>

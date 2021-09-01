@@ -1,0 +1,315 @@
+/* Root Variables */
+:root{
+  --spriteX: 25%;
+  --spriteY: 65%;
+  --spriteImage: url('../../assets/sprites/hero/front.png');
+  --spriteVillainImage: url('../../assets/sprites/villain/back.png');
+  --finalAttackImage: url('../../assets/sprites/stage/finalAttack-1.png');
+  --finalAttackX: 44%;
+  --finalAttackY: 4%;
+  --mapInversion: 0;
+  --health-color: green;
+  --health-val: 100%;
+}
+
+body{
+  background: url('https://images.unsplash.com/photo-1513728731559-6bf2c0c931f9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80');
+  background-size: cover;
+}
+
+/* Central syling */
+.primary-header{
+  text-shadow: 4px 4px 8px white;
+}
+
+.map-container{
+  display: flex;
+  justify-content: center;
+}
+
+.messages{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: rgba(0, 0, 0, .5);
+  width: 25vw;
+  position: relative;
+  padding: 1% 1% 1% 2%;
+  color: whitesmoke;
+}
+
+.messages__header{
+  font-size: 2rem;
+  font-weight: 200;
+  margin: 0;
+}
+
+.messages__detail{
+  height: 50%;
+  overflow: auto;
+  font-size: .8125rem;
+  z-index: 1;
+}
+
+.messages__detail * {
+  margin-top: 0;
+}
+
+.messages__detail .arr-emph{
+  color: gray;
+}
+
+.messages__hero-image{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 70%;
+}
+
+.map {
+  background-image: url('../../assets/sprites/stage/turret.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 460px;
+  height: 560px;
+  position: relative;
+  filter: invert(var(--mapInversion));
+  transition: filter .2s ease-in;
+  /* filter: opacity(100%); */
+  /* filter: hue-rotate(350deg); */
+}
+
+.hero-sprite{
+  height: 6vh;
+  width: 6vh;
+  background: var(--spriteImage);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  transition: all .2s ease-in;
+  top: var(--spriteY);
+  left: var(--spriteX);
+  z-index: 1;
+}
+
+
+.hero-icon{
+  position: absolute;
+  height: 2.5vh;
+  width: 2.5vh;
+  background-color: whitesmoke;
+  top: -3vh;
+  left: 1.8vh;
+  border: 1px solid rgba(0, 0, 0, .5);
+  border-radius: 4px;
+  text-align: center;
+  padding-left: 3px;
+  display: none;
+  z-index: 1;
+}
+
+.hero-icon.--active{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.villain-sprite{
+  height: 6vh;
+  width: 6vh;
+  background: var(--spriteVillainImage);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  transition: all .2s ease-in;
+  top: 35%;
+  left: 45%;
+}
+
+.monster-sprite{
+  height: 20vh;
+  width: 20vh;
+  background: url('../../assets/sprites/monster/monster.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  transition: all .2s ease-in;
+  top: 2%;
+  left: 32%;
+  opacity: 0;
+}
+
+
+.controls{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: whitesmoke;
+  background-color: rgba(0, 0, 0, .5);
+  width: 25vw;
+  position: relative;
+}
+
+.battle-log__health{
+  position: absolute;
+  top: 4px;
+}
+
+.enemy-data{
+  width: 95%;
+  height: 15vh;
+  padding: 1% 2%;
+  display: flex;
+  justify-content: center;
+  background-color: var(--modal-color);
+  box-shadow: var(--modal-shadow);
+  color: black;
+  opacity: 0;
+  overflow: auto;
+  font-size: .7rem;
+}
+
+.battle-log__challenge-wrapper{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battle-log__challenge {
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
+  line-height: 1rem;
+}
+
+.battle-log__challenge > button {
+  width: 90%;
+  margin: 1% 0;
+  position: relative;
+  transform: translateY(-4px);
+  box-shadow: 4px 4px 8px black;
+  transition: all .3s ease-in;
+  font-size: .7rem;
+}
+
+.battle-log__challenge > button:hover {
+  background-color: #6625bb;
+  color: whitesmoke;
+}
+
+.battle-log__challenge > button:active {
+  transform: translateY(-2px);
+}
+
+.battle-log__challenge > button.--error {
+  background-color: crimson;
+}
+
+.battle-log__challenge input {
+  width: 7ch;
+  height: 2ch;
+  position: relative;
+  top: 2px;
+}
+
+.battle-log__challenge input.--small {
+  width: 2ch;
+  height: 2ch;
+  position: relative;
+  top: 2px;
+}
+
+.battle-log__challenge input.--large {
+  width: 12ch;
+  height: 2ch;
+  position: relative;
+  top: 2px;
+}
+
+.challenge-code {
+  border: 2px solid;
+  border-radius: 4px;
+  background-color: gainsboro;
+  font-size: .6rem;
+  font-family: monospace;
+  color: black;
+  margin: 20px 0;
+  padding: 4% 2%;
+  width: 100%;
+}
+
+.dialog-advance:hover{
+  cursor: pointer;
+}
+
+.game-over {
+  height: 40vh;
+  width: 40vw;
+  position: absolute;
+  top: 25%;
+  background-color: var(--modal-color);
+  box-shadow: var(--modal-shadow);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.enemy-attack{
+  position: relative;
+  top: -28%;
+  left: 35%;
+  z-index: 2;
+  transform:scaleY(0);
+  transition: transform .2s cubic-bezier(0.66, 1.54, 0.78, 0.68);
+  opacity: 0;
+  transform-origin: top;
+}
+
+.enemy-attack.--active{
+  opacity: 1;
+  transform: scaleY(1.2) scaleX(1.2);
+}
+
+.enemy__health{
+  width: 80%;
+  height: 20px;
+  display: flex;
+  margin: 2% auto;
+  color: whitesmoke;
+  opacity: 0;
+  transition: opacity .3s linear;
+}
+
+.enemy__health-bar{
+  width: var(--health-val);
+  height:20px;
+  border: 2px solid black;
+  background-color: var(--health-color);
+}
+
+.final-attack{
+  width: 5vw;
+  height: 5vw;
+  position: relative;
+  top: var(--finalAttackY);
+  left: var(--finalAttackX);
+  z-index: 3;
+  background-image: var(--finalAttackImage);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0;
+  transition: all .2s ease-in;
+}
