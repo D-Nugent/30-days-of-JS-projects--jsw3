@@ -102,6 +102,13 @@ const checkIfPathBlocked = (direction, heroPos) => {
   // })
 };
 
+const sceneChange = (delay=2000,brightness=0) => {
+  document.documentElement.style.setProperty('--mapBrightness',brightness)
+  setTimeout(() => {
+    document.documentElement.style.setProperty('--mapBrightness',1);
+  }, delay);
+}
+
 const checkIfNewScene = (x,y) => {
   const [coordMatch,nextScene,nextSceneMap,charPos,charDirection] = {
     entrance: [x=='21%' && y=='6%','depths','../../assets/sprites/stage/dungeon/dungeon-2.png',['78.5%','85%'],characterConfig.back],
@@ -115,10 +122,9 @@ const checkIfNewScene = (x,y) => {
     dungeon: [x=='6%' && y=='58%','depths','../../assets/sprites/stage/dungeon/dungeon-2.png',['70.5%','9%'],characterConfig.front]
   }[currentMap];
   if (coordMatch) {
-    document.documentElement.style.setProperty('--mapBrightness',0)
+    sceneChange()
     setTimeout(() => map.style.backgroundImage = `url(${nextSceneMap})`, 1000);
     setTimeout(() =>  {
-      document.documentElement.style.setProperty('--mapBrightness',1);
       documentRoot.style.setProperty('--spriteX',charPos[0]); 
       documentRoot.style.setProperty('--spriteY',charPos[1]);
       documentRoot.style.setProperty('--spriteImage',charDirection);
@@ -138,7 +144,9 @@ const checkForRandomEncounter = () => {
   // const encounterRate = .03;
   const encounterCheck = Math.random();
   const monsterAppears = encounterCheck < encounterRate
-  if (monsterAppears) startBattle();
+  if (monsterAppears) {
+    startBattle();
+  }
 }
 
 const moveControl = { // up arrow

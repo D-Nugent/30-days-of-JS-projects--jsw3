@@ -15,6 +15,10 @@ let characterConfig = {
   rightStep1: `url('../../assets/sprites/hero/right-step-1.png')`,
   rightStep2: `url('../../assets/sprites/hero/right-step-2.png')`,
   rightTurn: `url('../../assets/sprites/hero/right-turn.png')`,
+  attackBasic: `url('../../assets/sprites/hero/attack-basic.png')`,
+  attackMagic: `url('../../assets/sprites/hero/attack-magic.png')`,
+  attackScarlet: `url('../../assets/sprites/hero/attack-scarlet.png')`,
+  attackRagnarok: `url('../../assets/sprites/hero/attack-ragnarok.png')`,
 }
 
 let villainConfig = {

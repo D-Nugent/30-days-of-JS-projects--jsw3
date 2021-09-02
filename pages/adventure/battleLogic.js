@@ -42,10 +42,13 @@ const heroData = () => {
       if(this._heroHealth <= 0) this.heroDefeated();
     },
     useAttack(target){
+      setPlayerSprite(characterConfig.attackBasic,0)
       newBattleMessage('Player used a regular attack');
       target.reduceMonsterHealth(40);
+      setPlayerSprite();
     },
     useFiarr(target){
+      setPlayerSprite(characterConfig.attackMagic,0)
       newBattleMessage('Player used fi[arr]!');
       if(target.monsterWeakness === 'fire') {
         target.reduceMonsterHealth(80);
@@ -54,8 +57,10 @@ const heroData = () => {
         target.reduceMonsterHealth(30);
         newBattleMessage(`It's not very effective.`);
       }
+      setPlayerSprite()
     },
     useBlizaard(target){
+      setPlayerSprite(characterConfig.attackMagic,0)
       newBattleMessage('Player used bliz[arr]d!')
       if(target.monsterWeakness === 'ice') {
         target.reduceMonsterHealth(80);
@@ -64,8 +69,10 @@ const heroData = () => {
         target.reduceMonsterHealth(30);
         newBattleMessage(`It's not very effective.`)
       }
+      setPlayerSprite()
     },
     useSparrk(target){
+      setPlayerSprite(characterConfig.attackMagic,0)
       newBattleMessage('Player used sp[arr]k!')
       if(target.monsterWeakness === 'lightning') {
         target.reduceMonsterHealth(80);
@@ -74,28 +81,36 @@ const heroData = () => {
         target.reduceMonsterHealth(30);
         newBattleMessage(`It's not very effective.`)
       }
+      setPlayerSprite()
     },
     useDisableBarrier(target) {
+      setPlayerSprite(characterConfig.attackMagic,0)
       if (target.hasBarrier) {
         target.hasBarrier = false;
         newBattleMessage(`Enemy barrier removed!`)
       } else {
         newBattleMessage(`Enemy doesn't have a barrier.`)
       }
+      setPlayerSprite()
     },
     useScarrletBlade(target) {
+      setPlayerSprite(characterConfig.attackScarlet,0)
       newBattleMessage('Player used Sc[arr]let Blade!');
       target.reduceMonsterHealth(100);
+      setPlayerSprite();
     },
     useHarrmony() {
+      setPlayerSprite(characterConfig.attackMagic,0)
       newBattleMessage(`Player used H[arr]mony`);
       const newHealth = this._heroHealth + 150;
       this._heroHealth = newHealth>300?300:newHealth;
       const healthPerc = (this._heroHealth / 300) * 100;
       document.documentElement.style.setProperty('--playerHealth', `${healthPerc}%`);
       document.documentElement.style.setProperty('--playerHealthColor', `${healthPerc>70?'green':healthPerc>40?'orange':'red'}`);
+      setPlayerSprite();
     },
     usePotion(){
+      setPlayerSprite(characterConfig.attackMagic,0)
       newBattleMessage(`Player used a Potion`);
       let potionIndex = playerItems.indexOf('Potion');
       playerItems.splice(potionIndex,1);
@@ -104,8 +119,10 @@ const heroData = () => {
       const healthPerc = (this._heroHealth / 300) * 100;
       document.documentElement.style.setProperty('--playerHealth', `${healthPerc}%`);
       document.documentElement.style.setProperty('--playerHealthColor', `${healthPerc>70?'green':healthPerc>40?'orange':'red'}`);
+      setPlayerSprite()
     },
     useRagnarrok(target){
+      setPlayerSprite(characterConfig.attackRagnarok,0)
       newBattleMessage('Ultimate Attack! Ragn[arr]ok!');
       const targetHasBarrier = target.hasBarrier;
       if (targetHasBarrier) {
@@ -115,6 +132,7 @@ const heroData = () => {
       } else {
         target.reduceMonsterHealth(200);
       }
+      setPlayerSprite();
     },
     heroDefeated(){
       newBattleMessage('Hero defeated...');
@@ -246,12 +264,14 @@ const newBattleMessage = (msg) => {
   battleMessages.classList.add('--active');
   battleMessages.textContent = msg;
   setTimeout(() => {
-    battleMessages.classList.remove('--active')
+    battleMessages.classList.remove('--active');
   }, 2000);
 }
 
 const startBattle = () => {
   battleWindow.classList.add('--active');
+  sceneChange(200,0);
+  sceneChange(1000,10);
   inBattle = true;
   const randomMonster = monsterTypes[Math.floor(Math.random()*3)]
   currentMonster = createMonster(randomMonster);
@@ -411,4 +431,10 @@ const runEnemyTurn = () => {
     currentMonster.useAttack(hero);
     isPlayerturn = true;
   }, 3000);
+}
+
+const setPlayerSprite = (spriteUrl,delay = 1000) => {
+  setTimeout(() => {
+    document.documentElement.style.setProperty('--battleSprite', spriteUrl?spriteUrl:characterConfig.leftTurn);
+  }, delay);
 }

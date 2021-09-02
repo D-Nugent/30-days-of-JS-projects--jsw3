@@ -10,10 +10,8 @@ const interactions ={
 } 
 
 const ladderEvent = (direction) => {
-  console.log('I ran!');
-  document.documentElement.style.setProperty('--mapBrightness',0);
+  sceneChange(1000)
   setTimeout(() =>  {
-    document.documentElement.style.setProperty('--mapBrightness',1);
     if (direction==='down') {
       documentRoot.style.setProperty('--spriteX','30%'); 
       documentRoot.style.setProperty('--spriteY','66%');
