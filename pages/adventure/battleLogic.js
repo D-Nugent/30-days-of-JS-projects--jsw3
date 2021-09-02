@@ -42,13 +42,14 @@ const heroData = () => {
       if(this._heroHealth <= 0) this.heroDefeated();
     },
     useAttack(target){
-      setPlayerSprite(characterConfig.attackBasic,0)
+      setPlayerSprite(characterConfig.attackBasic);
+      setSFX(attackSFX.attackBasic,'--enemySFX');
       newBattleMessage('Player used a regular attack');
       target.reduceMonsterHealth(40);
-      setPlayerSprite();
     },
     useFiarr(target){
-      setPlayerSprite(characterConfig.attackMagic,0)
+      setPlayerSprite(characterConfig.attackMagic);
+      setSFX(attackSFX.attackFiarr,'--enemySFX');
       newBattleMessage('Player used fi[arr]!');
       if(target.monsterWeakness === 'fire') {
         target.reduceMonsterHealth(80);
@@ -57,10 +58,10 @@ const heroData = () => {
         target.reduceMonsterHealth(30);
         newBattleMessage(`It's not very effective.`);
       }
-      setPlayerSprite()
     },
     useBlizaard(target){
-      setPlayerSprite(characterConfig.attackMagic,0)
+      setPlayerSprite(characterConfig.attackMagic);
+      setSFX(attackSFX.attackBlizarrd,'--enemySFX',2);
       newBattleMessage('Player used bliz[arr]d!')
       if(target.monsterWeakness === 'ice') {
         target.reduceMonsterHealth(80);
@@ -69,10 +70,10 @@ const heroData = () => {
         target.reduceMonsterHealth(30);
         newBattleMessage(`It's not very effective.`)
       }
-      setPlayerSprite()
     },
     useSparrk(target){
-      setPlayerSprite(characterConfig.attackMagic,0)
+      setPlayerSprite(characterConfig.attackMagic);
+      setSFX(attackSFX.attackSparrk,'--enemySFX');
       newBattleMessage('Player used sp[arr]k!')
       if(target.monsterWeakness === 'lightning') {
         target.reduceMonsterHealth(80);
@@ -81,36 +82,36 @@ const heroData = () => {
         target.reduceMonsterHealth(30);
         newBattleMessage(`It's not very effective.`)
       }
-      setPlayerSprite()
     },
     useDisableBarrier(target) {
-      setPlayerSprite(characterConfig.attackMagic,0)
+      setPlayerSprite(characterConfig.attackMagic);
+      setSFX(attackSFX.attackDisable,'--enemySFX',2);
       if (target.hasBarrier) {
         target.hasBarrier = false;
         newBattleMessage(`Enemy barrier removed!`)
       } else {
         newBattleMessage(`Enemy doesn't have a barrier.`)
       }
-      setPlayerSprite()
     },
     useScarrletBlade(target) {
-      setPlayerSprite(characterConfig.attackScarlet,0)
+      setPlayerSprite(characterConfig.attackScarlet);
+      setSFX(attackSFX.attackScarlet,'--enemySFX',2);
       newBattleMessage('Player used Sc[arr]let Blade!');
       target.reduceMonsterHealth(100);
-      setPlayerSprite();
     },
     useHarrmony() {
-      setPlayerSprite(characterConfig.attackMagic,0)
+      setPlayerSprite(characterConfig.attackMagic);
+      setSFX(attackSFX.attackHarrmony,'--playerSFX',1);
       newBattleMessage(`Player used H[arr]mony`);
       const newHealth = this._heroHealth + 150;
       this._heroHealth = newHealth>300?300:newHealth;
       const healthPerc = (this._heroHealth / 300) * 100;
       document.documentElement.style.setProperty('--playerHealth', `${healthPerc}%`);
       document.documentElement.style.setProperty('--playerHealthColor', `${healthPerc>70?'green':healthPerc>40?'orange':'red'}`);
-      setPlayerSprite();
     },
     usePotion(){
-      setPlayerSprite(characterConfig.attackMagic,0)
+      setPlayerSprite(characterConfig.attackMagic)
+      setSFX(attackSFX.attackHarrmony,'--playerSFX',1);
       newBattleMessage(`Player used a Potion`);
       let potionIndex = playerItems.indexOf('Potion');
       playerItems.splice(potionIndex,1);
@@ -119,10 +120,9 @@ const heroData = () => {
       const healthPerc = (this._heroHealth / 300) * 100;
       document.documentElement.style.setProperty('--playerHealth', `${healthPerc}%`);
       document.documentElement.style.setProperty('--playerHealthColor', `${healthPerc>70?'green':healthPerc>40?'orange':'red'}`);
-      setPlayerSprite()
     },
     useRagnarrok(target){
-      setPlayerSprite(characterConfig.attackRagnarok,0)
+      setPlayerSprite(characterConfig.attackRagnarok)
       newBattleMessage('Ultimate Attack! Ragn[arr]ok!');
       const targetHasBarrier = target.hasBarrier;
       if (targetHasBarrier) {
@@ -132,7 +132,6 @@ const heroData = () => {
       } else {
         target.reduceMonsterHealth(200);
       }
-      setPlayerSprite();
     },
     heroDefeated(){
       newBattleMessage('Hero defeated...');
@@ -237,12 +236,14 @@ const createMonster = (type) => ({
     if(this._monsterHealth <= 0) this.monsterDefeated();
   },
   useAttack(target){
-    const isSpecialAttack = Math.random() < .1;
-    if(isSpecialAttack) {
+    const isSpecialAttack = Math.random() < .2;
+    if(!isSpecialAttack) {
       newBattleMessage('Enemy used a regular attack');
+      setSFX(attackSFX.attackBasic,'--playerSFX');
       target.reduceHeroHealth(this._standardAttackPower);
     } else {
       newBattleMessage(`Enemy used ${this._specialAttackName}`);
+      setSFX(attackSFX[type],'--playerSFX',2);
       target.reduceHeroHealth(this._specialAttackPower);
     }
   },
@@ -273,7 +274,7 @@ const startBattle = () => {
   sceneChange(200,0);
   sceneChange(1000,10);
   inBattle = true;
-  const randomMonster = monsterTypes[Math.floor(Math.random()*3)]
+  const randomMonster = monsterTypes[Math.floor(Math.random()*4)]
   currentMonster = createMonster(randomMonster);
   enemySprite.setAttribute('src',currentMonster.monsterSprite);
 }
@@ -434,7 +435,30 @@ const runEnemyTurn = () => {
 }
 
 const setPlayerSprite = (spriteUrl,delay = 1000) => {
+  document.documentElement.style.setProperty('--battleSprite', spriteUrl);
   setTimeout(() => {
-    document.documentElement.style.setProperty('--battleSprite', spriteUrl?spriteUrl:characterConfig.leftTurn);
+    document.documentElement.style.setProperty('--battleSprite', characterConfig.leftTurn);
   }, delay);
+}
+
+const setSFX = (spriteUrl,targetProperty,fpsModifier=3) => {
+const spriteArr = [...spriteUrl];
+let fpsInterval = 1000 / (spriteArr.length * fpsModifier);
+let then = window.performance.now();
+let now,elapsed;
+
+  function assignSprite(){
+    now = window.performance.now();
+    elapsed = now - then;
+    if (elapsed > fpsInterval) {
+      if (spriteArr.length===0) {
+        document.documentElement.style.setProperty(targetProperty, null)
+        return cancelAnimationFrame(assignSprite);
+      };
+      then = now - (elapsed % fpsInterval);
+      document.documentElement.style.setProperty(targetProperty, spriteArr.shift());
+    }
+    requestAnimationFrame(assignSprite)
+  }
+  assignSprite()
 }

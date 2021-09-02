@@ -9,10 +9,9 @@
   --enemyHealthColor: green;
   --playerHealthColor: green;
   --battleScene: url('../../assets/sprites/stage/battle-scenes/cave.png');
-  /* --battleSprite: url('../../assets/sprites/hero/attack-ragnarok.png'); */
   --battleSprite: url('../../assets/sprites/hero/left-turn.png');
-  /* --battleSprite: url('../../assets/sprites/hero/left-turn.png'); */
-  /* --battleSprite: url('../../assets/sprites/hero/left-turn.png'); */
+  --enemySFX: url('');
+  --playerSFX: url('');
 }
 
 body{
@@ -532,8 +531,23 @@ header {
   width: 60%;
 }
 
+.enemy{
+  position: relative;
+}
+
 .enemy__sprite{
   height: 136px;
+}
+
+.enemy__attack-sfx{
+  background-image: var(--enemySFX);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 136px;
+  width: 100%;
+  position: absolute;
+  top: 0;
 }
 
 .enemy__health{
@@ -554,6 +568,7 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .player__sprite {
@@ -564,6 +579,17 @@ header {
   background-repeat: no-repeat;
   /* background-size:30%; */
   transform: scale(2);
+}
+
+.player__attack-sfx{
+  background-image: var(--playerSFX);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 96px;
+  width: 100%;
+  position: absolute;
+  top: 0;
 }
 
 .player__health{
