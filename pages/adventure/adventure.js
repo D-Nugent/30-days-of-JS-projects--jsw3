@@ -19,6 +19,7 @@ const getSprite = () => window.getComputedStyle(documentRoot).getPropertyValue('
 const getBrightness = () => window.getComputedStyle(documentRoot).getPropertyValue('--mapBrightness').trim();
 
 let moving = false;
+let inBattle = false;
 let firstAudioCheck = true;
 let currentMap = 'entrance';
 
@@ -55,7 +56,6 @@ const controls = {
 }
 
 const checkIfPathBlocked = (direction, heroPos) => {
-    // const heroPos = heroSprite.getBoundingClientRect();
     let isBlocked;
     const mapBoundaries = getMapBoundaries();
     const blockBoundaries = getBlockBoundaries();
@@ -103,24 +103,42 @@ const checkIfPathBlocked = (direction, heroPos) => {
 };
 
 const checkIfNewScene = (x,y) => {
-  const [xScene,yScene,nextScene] = {
-    entrance: ['21%','10%','../../assets/sprites/stage/dungeon/dungeon-2.png']
+  const [coordMatch,nextScene,nextSceneMap,charPos,charDirection] = {
+    entrance: [x=='21%' && y=='6%','depths','../../assets/sprites/stage/dungeon/dungeon-2.png',['78.5%','85%'],characterConfig.back],
+    depths: [
+      (x=='70.5%' && y=='5%') || (x=='78.5%' && y=='89%'),
+      x=='70.5%'?'dungeon':'entrance',
+      `../../assets/sprites/stage/dungeon/dungeon-${x=='70.5%'?3:1}.png`,
+      x=='70.5%'?['10%','58%']:['21%','10%'],
+      x=='70.5%'?characterConfig.rightStep:characterConfig.front
+  ],
+    dungeon: [x=='6%' && y=='58%','depths','../../assets/sprites/stage/dungeon/dungeon-2.png',['70.5%','9%'],characterConfig.front]
   }[currentMap];
-  if (xScene === x && yScene === y) {
+  if (coordMatch) {
     document.documentElement.style.setProperty('--mapBrightness',0)
-    setTimeout(() => map.style.backgroundImage = `url(${nextScene})`, 1000);
+    setTimeout(() => map.style.backgroundImage = `url(${nextSceneMap})`, 1000);
     setTimeout(() =>  {
       document.documentElement.style.setProperty('--mapBrightness',1);
-      documentRoot.style.setProperty('--spriteX',`78.5%`); 
-      documentRoot.style.setProperty('--spriteY',`85%`);
-      documentRoot.style.setProperty('--spriteImage',characterConfig.back);
-      currentMap = 'depths';
+      documentRoot.style.setProperty('--spriteX',charPos[0]); 
+      documentRoot.style.setProperty('--spriteY',charPos[1]);
+      documentRoot.style.setProperty('--spriteImage',charDirection);
+      mapBlocks.forEach(block => block.classList.remove(`--${currentMap}`))
+      currentMap = nextScene;
       mapBlocks.forEach(block => block.classList.add(`--${currentMap}`))
     }
     , 2000);
     // setTimeout(() => window.location.href = '../bossFight/bossFight.html', 1000);
   }
-  
+};
+
+const checkForRandomEncounter = () => {
+  if (inBattle) return;
+  console.count('encounterCheck');
+  const encounterRate = .03;
+  // const encounterRate = .03;
+  const encounterCheck = Math.random();
+  const monsterAppears = encounterCheck < encounterRate
+  if (monsterAppears) startBattle();
 }
 
 const moveControl = { // up arrow
@@ -135,6 +153,7 @@ const moveControl = { // up arrow
     moving = true;
     documentRoot.style.setProperty('--spriteY',`${Number(y.slice(0,y.indexOf('%')))-4}%`); // up arrow
     setTimeout(() => moving = false, 150);
+    y = `${parseFloat(y)-4}%`;
     checkIfNewScene(x,y);
   },
   39:({x,y},heroPos) => { // right arrow
@@ -153,6 +172,8 @@ const moveControl = { // up arrow
       documentRoot.style.setProperty('--spriteImage',characterConfig.rightStep2);
       moving=false
     }, 150);
+    x = `${parseFloat(x)+4}%`
+    checkIfNewScene(x,y);
   },
   40:({x,y},heroPos) => { // down arrow
     let pathBlocked = checkIfPathBlocked('down',heroPos);
@@ -168,6 +189,8 @@ const moveControl = { // up arrow
       documentRoot.style.setProperty('--spriteImage',characterConfig.frontStep2)
       moving=false;
     }, 150);
+    y = `${parseFloat(y)+4}%`;
+    checkIfNewScene(x,y);
   },
   37:({x,y},heroPos) => { // left arrow
     let pathBlocked = checkIfPathBlocked('left',heroPos);
@@ -185,6 +208,8 @@ const moveControl = { // up arrow
       documentRoot.style.setProperty('--spriteImage',characterConfig.leftStep2)
       moving = false
     }, 150);
+    x = `${parseFloat(x)-4}%`
+    checkIfNewScene(x,y);
   },
   32:({x,y},heroPos) => { // space bar
     controls.space.classList.add('--active');
@@ -200,6 +225,7 @@ const moveControl = { // up arrow
 
 
 function moveCharacter(e){
+  if(inBattle) return;
   let axis = {
     y: getYAxis(),
     x: getXAxis()
@@ -207,7 +233,7 @@ function moveCharacter(e){
   e.preventDefault();
   if(typeof moveControl[e.keyCode] == 'undefined') return;
   moveControl[e.keyCode](axis, getHeroPos());
-  checkForInteractions(axis)
+  checkForInteractions(axis);
   console.log('x',axis.x,'y',axis.y);
 }
 
@@ -227,3 +253,4 @@ function releaseControl(e){
 // Event Listeners
 document.addEventListener('keyup',releaseControl)
 document.addEventListener('keydown',moveCharacter)
+document.addEventListener('keydown',debounce(checkForRandomEncounter,31))

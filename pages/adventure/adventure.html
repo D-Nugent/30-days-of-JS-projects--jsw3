@@ -43,6 +43,8 @@
       <div class="map__block map__block--12"></div>
       <div class="map__block map__block--13"></div>
       <div class="map__block map__block--14"></div>
+      <div class="map__block map__block--15"></div>
+      <div class="map__block map__block--16"></div>
       <div class="hero-sprite">
         <div class="hero-icon">!</div>
       </div>
@@ -68,10 +70,6 @@
       </p>
       <div class="battle-window__sprites">
         <div class="enemy">
-          <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/demon-feather.png" alt="enemy"> -->
-           <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/ghoul.png" alt="enemy"> -->
-          <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/giant-leech.png" alt="enemy"> -->
-          <!-- <img class="enemy__sprite" src="../../assets/sprites/monster/werewolf.png" alt="enemy"> -->
           <img class="enemy__sprite" src="../../assets/sprites/monster/hydra.png" alt="enemy">
           <div class="enemy__health">
             <div class="enemy__health-bar"></div>
@@ -86,44 +84,50 @@
       </div>
       <section class="battle-menu">
         <div class="battle-menu__actions">
-          <article class="battle-menu__primary">
-            <button class="battle-menu__option">
+          <article class="battle-menu__modal battle-menu__primary">
+            <button class="battle-menu__option" data-type='battle' data-method='attack'>
             Attack
-          </button>
-          <button class="battle-menu__option">
-            Skill
-          </button>
-          <button class="battle-menu__option">
-            Item
-          </button>
-          <button class="battle-menu__option">
-            Run
-          </button>
-        </article>
-        <article class="battle-menu__secondary">
-          <button class="battle-menu__option">
+            </button>
+            <button class="battle-menu__option" data-type='battle' data-method='skill'>
+              Skill
+            </button>
+            <button class="battle-menu__option" data-type='battle' data-method='item'>
+              Item
+            </button>
+            <button class="battle-menu__option" data-type='battle' data-method='run'>
+              Run
+            </button>
+          </article>
+          <article class="battle-menu__modal battle-menu__secondary">
+            <button class="battle-menu__option">
+              Potion
+            </button>
+            <button class="battle-menu__option">
+              Restore
+            </button>
+          </article>
+       </div>
+        <article class="battle-menu__details">
+          <h4 class="battle-menu__effect-name">
             Potion
-          </button>
-          <button class="battle-menu__option">
-            Restore
-          </button>
-        </article>
-      </div>
-      <article class="battle-menu__details">
-        <h4 class="battle-menu__effect-name">
-          Potion
-        </h4>
-        <p class="battle-menu__effect-description">
-          Restores your health by 60hp!
-        </p>
-        <p class="battle-menu__method-details">
-          Does stuff...
-        </p>
-      </article>        
+          </h4>
+          <p class="battle-menu__effect-description">
+            Restores your health by 60hp!
+          </p>
+          <p class="battle-menu__method-details">
+            Does stuff...
+          </p>
+        </article>        
       </section>
+    </aside>
+    <aside class="game-over">
+      <h2>Game Over</h2>
+      <a class="primary-btn" href="./adventure.html">Retry?</a>
     </aside>
     <audio src="../../assets/audio/bensound-ofeliasdream.mp3" loop></audio>
   </main>
+  <script src="../../utils/debounce.js"></script>
+  <script src="./battleLogic.js"></script>
   <script src="./interactions.js"></script>
   <script src="../../assets/data/character.js"></script>
   <script src="./adventure.js"></script>

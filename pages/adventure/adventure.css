@@ -3,7 +3,12 @@
   --spriteX: 9%;
   --spriteY: 78%;
   --spriteImage: url('../../assets/sprites/hero/front.png');
-  --mapBrightness: 1
+  --mapBrightness: 1;
+  --enemyHealth: 100%;
+  --playerHealth: 100%;
+  --enemyHealthColor: green;
+  --playerHealthColor: green;
+  --battleScene: url('../../assets/sprites/stage/battle-scenes/cave.png')
 }
 
 body{
@@ -77,7 +82,7 @@ header {
 }
 
 .map__block{
-  background-color: rgba(0, 128, 128,.5);
+  /* background-color: rgba(0, 128, 128,.5); */
   position: absolute;
 }
 
@@ -93,6 +98,11 @@ header {
   height: 25%;
 }
 
+.map__block--1.--dungeon{
+  width: 100%;
+  height: 32%;
+}
+
 .map__block--2{
   width: 20%;
   height: 15%;
@@ -106,6 +116,12 @@ header {
   top: 0;
 }
 
+.map__block--2.--dungeon{
+  width: 36%;
+  height: 16%;
+  top: 32%;
+}
+
 .map__block--3{
   width: 56%;
   height: 8%;
@@ -117,6 +133,13 @@ header {
   width: 22%;
   height: 11%;
   top: 14%;
+  left: 0;
+}
+
+.map__block--3.--dungeon{
+  width: 17%;
+  height: 14%;
+  top: 48%;
   left: 0;
 }
 
@@ -134,6 +157,13 @@ header {
   left: 0;
 }
 
+.map__block--4.--dungeon{
+  width: 28%;
+  height: 8%;
+  left: 0;
+  top: 66%;
+}
+
 .map__block--5{
   width: 13%;
   height: 10%;
@@ -142,10 +172,17 @@ header {
 }
 
 .map__block--5.--depths{
-  width: 62%;
+  width: 61.5%;
   height: 15%;
   top: 28%;
   left: 12%;
+}
+
+.map__block--5.--dungeon{
+  width: 1%;
+  height: 6%;
+  left: 44%;
+  top: 32%;
 }
 
 .map__block--6{
@@ -156,10 +193,16 @@ header {
 }
 
 .map__block--6.--depths{
-  width: 14%;
+  width: 13.5%;
   height: 10%;
   top: 43%;
-  right: 26%
+  right: 26.5%
+}
+
+.map__block--6.--dungeon{
+  width: 36.5%;
+  height: 16%;
+  top: 32%;
 }
 
 .map__block--7{
@@ -176,10 +219,17 @@ header {
   left: 29%
 }
 
+.map__block--7.--dungeon{
+  width: 8%;
+  height: 7%;
+  left: 36%;
+  top: 46%;
+}
+
 .map__block--8{
   width: 50%;
-  height: 11%;
-  top: 73%;
+  height: 10%;
+  top: 74%;
   left: 0%;
 }
 
@@ -188,6 +238,13 @@ header {
   height: 29%;
   top: 57%;
   left: 0%
+}
+
+.map__block--8.--dungeon{
+  width: 8%;
+  height: 7%;
+  left: 56%;
+  top: 46%;
 }
 
 .map__block--9{
@@ -203,6 +260,12 @@ header {
   top: 57%;
 }
 
+.map__block--9.--dungeon{
+  width: 20%;
+  height: 26%;
+  top: 48%;
+}
+
 .map__block--10{
   width: 100%;
   height: 7%;
@@ -214,6 +277,11 @@ header {
   width: 22%;
   height: 13%;
   bottom: 44%;
+}
+
+.map__block--10.--dungeon{
+  width: 100%;
+  height: 26%;
 }
 
 .map__block--11{
@@ -230,6 +298,13 @@ header {
   left: 29.5%;
 }
 
+.map__block--11.--dungeon{
+  width: 1%;
+  height: 6%;
+  left: 55.5%;
+  bottom: 62%;
+}
+
 .map__block--12{
   width: 7.8%;
   height: 5.25%;
@@ -241,6 +316,13 @@ header {
   width: 18%;
   height: 16%;
   top: 31%;
+}
+
+.map__block--12.--dungeon{
+  width: 1%;
+  height: 8%;
+  right: 43%;
+  top: 53%;
 }
 
 .map__block--13{
@@ -255,16 +337,61 @@ header {
   left: 14%;
 }
 
+.map__block--13.--dungeon{
+  width: .5%;
+  height: 8%;
+  right: 56%;
+  top: 53%;
+}
+
 .map__block--14{
   bottom: -10%;
   left: -10%;
 }
 
 .map__block--14.--depths{
-  width: 100%;
+  width: 78%;
   height: 8.5%;
   left: 0%;
   bottom: 0%;
+}
+
+.map__block--14.--dungeon{
+  width: 7%;
+  height: 5%;
+  top: 48%;
+  left: 72%
+}
+
+.map__block--15{
+  bottom: -10%;
+  left: -10%;
+}
+
+.map__block--15.--depths{
+  width: 16%;
+  height: 8.5%;
+  left: 84%;
+  bottom: 0%;
+}
+
+.map__block--15.--dungeon{
+  width: 11%;
+  height: 2%;
+  bottom: 38%;
+  left: 17%;
+}
+
+.map__block--16{
+  bottom: -10%;
+  left: -10%;
+}
+
+.map__block--16.--dungeon{
+  width: 1%;
+  height: 4%;
+  bottom: 34%;
+  left: 27%;
 }
 
 .hero-sprite{
@@ -287,7 +414,7 @@ header {
   width: 2.5vh;
   background-color: whitesmoke;
   top: -3vh;
-  left: 1.8vh;
+  left: .5vh;
   border: 1px solid rgba(0, 0, 0, .5);
   border-radius: 4px;
   text-align: center;
@@ -373,6 +500,11 @@ header {
   width: fit-content;
   padding: 1% 2%;
   background-color: rgba(245, 245, 245,.5);
+  display: none;
+}
+
+.battle-window__messages.--active{
+  display: flex;
 }
 
 .enemy-data{
@@ -403,9 +535,10 @@ header {
 }
 
 .enemy__health-bar{
-  width: 100%;
+  width: var(--enemyHealth);
   height: 100%;
-  background-color: green;
+  background-color: var(--enemyHealthColor);
+  transition: width .3s ease-in;
 }
 
 .player{
@@ -423,9 +556,10 @@ header {
 }
 
 .player__health-bar{
- width: 100%;
- height: 100%;
- background-color: green;
+  width: var(--playerHealth);
+  height: 100%;
+  background-color: var(--playerHealthColor);
+  transition: width .3s ease-in;
 }
 
 .battle-menu {
@@ -439,22 +573,58 @@ header {
   width: 25%;
 }
 
-.battle-menu__actions article {
+.battle-menu__actions button:hover {
+  cursor: pointer;
+}
+
+.battle-menu__modal {
   display: flex;
   flex-direction: column;
   justify-content:flex-start;
   background-color: rgba(245, 245, 245,.5);
   width: 50%;
   margin: 2%;;
+  height: fit-content;
 }
 
+.battle-menu__secondary {
+  display: none;
+}
+
+.battle-menu__secondary.--active {
+  display: flex;
+}
 
 .battle-menu__details{
   width: 50%;
   background-color: rgba(245, 245, 245,.5);
   padding: 1% 2%;
+  display: none;
+  flex-direction: column;
+}
+
+.battle-menu__details.--active{
+  display: flex;
 }
 
 .battle-menu__details > * {
   margin: 1% 0;
+}
+
+.game-over {
+  height: 40vh;
+  width: 40vw;
+  position: absolute;
+  top: 25%;
+  background-color: var(--modal-color);
+  box-shadow: var(--modal-shadow);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-over.--active{
+  display: flex;
+  z-index: 1;
 }
