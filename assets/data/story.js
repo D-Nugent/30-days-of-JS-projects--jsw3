@@ -141,13 +141,4 @@ const storyDetails = [
         <p>I don't know where you are but I'll save you brother. You and all of the kingdom.<p>
       `
     },
-    {
-      id: 12,
-      speaking: '<span class="arr-emph">[arr]</span>thur:',
-      description: `
-        <p>Huff, huff...It's over...</p>
-        <p>...<span class="arr-emph">[arr]</span>agon...what happened to you?</p>
-        <p>I don't know where you are but I'll save you brother. You and all of the kingdom.<p>
-      `
-    },
   ]

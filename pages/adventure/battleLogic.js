@@ -4,13 +4,17 @@ const battleMessages = battleWindow.querySelector('.battle-window__messages');
 const enemySprite = document.querySelector('.enemy__sprite');
 const gameOverModal = document.querySelector('.game-over');
 const battleBtns = battleWindow.querySelectorAll('[data-type="battle"]');
+const primaryMenu = battleWindow.querySelector('.battle-menu__primary');
 const secondaryMenu = battleWindow.querySelector('.battle-menu__secondary');
+const enemyData = battleWindow.querySelector('.enemy-data');
 const battleDetails ={
   container: battleWindow.querySelector('.battle-menu__details'),
   name: battleWindow.querySelector('.battle-menu__effect-name'),
   description: battleWindow.querySelector('.battle-menu__effect-description'),
   details: battleWindow.querySelector('.battle-menu__effect-details'),
 } 
+const attackBtn = battleBtns[0];
+
 // Event Listeners
 battleBtns.forEach(btn => btn.addEventListener('click',battleAction))
 
@@ -18,7 +22,8 @@ battleBtns.forEach(btn => btn.addEventListener('click',battleAction))
 const monsterTypes = ['ghoul','vulture','leech','werewolf'];
 let currentMonster;
 let isPlayerturn = true;
-const playerItems = ['Potion','Potion']
+const playerItems = ['Potion','Potion'];
+let braveryMode = false;
 // Functions
 
 // Function Objects
@@ -40,17 +45,18 @@ const heroData = () => {
       document.documentElement.style.setProperty('--playerHealth', `${healthPerc}%`);
       document.documentElement.style.setProperty('--playerHealthColor', `${healthPerc>70?'green':healthPerc>40?'orange':'red'}`);
       if(this._heroHealth <= 0) this.heroDefeated();
+      if(healthPerc < 40) toggleBravery();
     },
     useAttack(target){
       setPlayerSprite(characterConfig.attackBasic);
       setSFX(attackSFX.attackBasic,'--enemySFX');
-      newBattleMessage('Player used a regular attack');
+      newBattleMessage('[arr]thur used a regular attack');
       target.reduceMonsterHealth(40);
     },
     useFiarr(target){
       setPlayerSprite(characterConfig.attackMagic);
       setSFX(attackSFX.attackFiarr,'--enemySFX');
-      newBattleMessage('Player used fi[arr]!');
+      newBattleMessage('[arr]thur used fi[arr]!');
       if(target.monsterWeakness === 'fire') {
         target.reduceMonsterHealth(80);
         newBattleMessage(`It's super effective!`);
@@ -62,7 +68,7 @@ const heroData = () => {
     useBlizaard(target){
       setPlayerSprite(characterConfig.attackMagic);
       setSFX(attackSFX.attackBlizarrd,'--enemySFX',2);
-      newBattleMessage('Player used bliz[arr]d!')
+      newBattleMessage('[arr]thur used bliz[arr]d!')
       if(target.monsterWeakness === 'ice') {
         target.reduceMonsterHealth(80);
         newBattleMessage(`It's super effective!`)
@@ -74,7 +80,7 @@ const heroData = () => {
     useSparrk(target){
       setPlayerSprite(characterConfig.attackMagic);
       setSFX(attackSFX.attackSparrk,'--enemySFX');
-      newBattleMessage('Player used sp[arr]k!')
+      newBattleMessage('[arr]thur used sp[arr]k!')
       if(target.monsterWeakness === 'lightning') {
         target.reduceMonsterHealth(80);
         newBattleMessage(`It's super effective!`)
@@ -96,13 +102,13 @@ const heroData = () => {
     useScarrletBlade(target) {
       setPlayerSprite(characterConfig.attackScarlet);
       setSFX(attackSFX.attackScarlet,'--enemySFX',2);
-      newBattleMessage('Player used Sc[arr]let Blade!');
+      newBattleMessage('[arr]thur used Sc[arr]let Blade!');
       target.reduceMonsterHealth(100);
     },
     useHarrmony() {
       setPlayerSprite(characterConfig.attackMagic);
       setSFX(attackSFX.attackHarrmony,'--playerSFX',1);
-      newBattleMessage(`Player used H[arr]mony`);
+      newBattleMessage(`[arr]thur used H[arr]mony`);
       const newHealth = this._heroHealth + 150;
       this._heroHealth = newHealth>300?300:newHealth;
       const healthPerc = (this._heroHealth / 300) * 100;
@@ -112,7 +118,7 @@ const heroData = () => {
     usePotion(){
       setPlayerSprite(characterConfig.attackMagic)
       setSFX(attackSFX.attackHarrmony,'--playerSFX',1);
-      newBattleMessage(`Player used a Potion`);
+      newBattleMessage(`[arr]thur used a Potion`);
       let potionIndex = playerItems.indexOf('Potion');
       playerItems.splice(potionIndex,1);
       const newHealth = this._heroHealth + 120;
@@ -123,15 +129,16 @@ const heroData = () => {
     },
     useRagnarrok(target){
       setPlayerSprite(characterConfig.attackRagnarok)
+      setSFX(attackSFX.attackRagnarok,'--enemySFX',.5);
       newBattleMessage('Ultimate Attack! Ragn[arr]ok!');
-      const targetHasBarrier = target.hasBarrier;
-      if (targetHasBarrier) {
+      if (target.hasBarrier) {
         target.hasBarrier = false;
         target.reduceMonsterHealth(200);
-        targetHasBarrier = true;
+        target.hasBarrier = true;
       } else {
         target.reduceMonsterHealth(200);
       }
+      toggleBravery()
     },
     heroDefeated(){
       newBattleMessage('Hero defeated...');
@@ -171,7 +178,7 @@ const createMonster = (type) => ({
     vulture:'../../assets/sprites/monster/demon-feather.png',
     leech:'../../assets/sprites/monster/giant-leech.png',
     werewolf:'../../assets/sprites/monster/werewolf.png',
-    hydra:'../../assets/sprites/monster/hyrdra.png'
+    hydra:'../../assets/sprites/monster/hydra.png'
   }[type],
   _standardAttackPower:{
     ghoul:35,
@@ -208,6 +215,10 @@ const createMonster = (type) => ({
     werewolf:false,
     hydra:true
   }[type],
+  _monsterType:type,
+  get monsterType(){
+    return this._monsterType;
+  },
   get hasBarrier(){
     return this._hasBarrier;
   },
@@ -216,6 +227,14 @@ const createMonster = (type) => ({
   },
   get monsterName(){
     return this._monsterName;
+  },
+  get monsterData() {
+    return {
+      health: this.monsterHealth,
+      name: this.monsterName,
+      weakness: this.monsterWeakness,
+      hasBarrier: this.hasBarrier,
+    }
   },
   get monsterHealth(){
     return this._monsterHealth;
@@ -238,45 +257,69 @@ const createMonster = (type) => ({
   useAttack(target){
     const isSpecialAttack = Math.random() < .2;
     if(!isSpecialAttack) {
-      newBattleMessage('Enemy used a regular attack');
+      newBattleMessage(`${this.monsterName} used a regular attack`);
       setSFX(attackSFX.attackBasic,'--playerSFX');
       target.reduceHeroHealth(this._standardAttackPower);
     } else {
-      newBattleMessage(`Enemy used ${this._specialAttackName}`);
+      newBattleMessage(`${this.monsterName} used ${this._specialAttackName}`);
       setSFX(attackSFX[type],'--playerSFX',2);
       target.reduceHeroHealth(this._specialAttackPower);
     }
   },
   monsterDefeated(){
-    newBattleMessage(`${this._monsterName} defeated!`);
+    newBattleMessage(`${this._monsterName} defeated!`,3000);
+    const conditionalTimeout = braveryMode? 4000 : 2200;
     setTimeout(() => {
       battleWindow.classList.remove('--active');
       inBattle = false;
       isPlayerturn = true;
       document.documentElement.style.setProperty('--enemyHealth',`100%`);
       document.documentElement.style.setProperty('--enemyHealthColor', `green`);
-    }, 2000);
+      audioTrack[1].pause();
+      if (audioTrack[0].paused && !audioManuallyPaused) {
+        audioTrack[0].play();
+        audioBtn.innerText = "🔊"
+      }
+    }, conditionalTimeout);
+    if (type === 'hydra') {
+      heroMsg.innerHTML = `
+      <p>Congratulations! You received The sword of [arr]gus!</p>
+      `;
+    setTimeout(() => window.location.href = '../victory/victory.html', 6000);
+    }
   }
 })
 
 // Logic Functions
 
-const newBattleMessage = (msg) => {
+const newBattleMessage = (msg,optionalTimeout = 2000) => {
   battleMessages.classList.add('--active');
   battleMessages.textContent = msg;
   setTimeout(() => {
     battleMessages.classList.remove('--active');
-  }, 2000);
+  }, optionalTimeout);
 }
 
-const startBattle = () => {
+const startBattle = (isBoss = false) => {
   battleWindow.classList.add('--active');
   sceneChange(200,0);
   sceneChange(1000,10);
   inBattle = true;
-  const randomMonster = monsterTypes[Math.floor(Math.random()*4)]
-  currentMonster = createMonster(randomMonster);
+  if (!isBoss) {
+    const randomMonster = monsterTypes[Math.floor(Math.random()*4)]
+    currentMonster = createMonster(randomMonster);
+  } else {
+    currentMonster = createMonster('hydra')
+  }
   enemySprite.setAttribute('src',currentMonster.monsterSprite);
+  primaryMenu.classList.remove('--inactive');
+  enemyData.innerHTML = JSON.stringify(currentMonster.monsterData,null,'<br>');
+  audioTrack[0].pause();
+  if (audioTrack[1].paused && !audioManuallyPaused) {
+    audioTrack[1].currentTime = 0;
+    audioTrack[1].play();
+    audioBtn.innerText = "🔊"
+  }
 }
 
 function loadSkills(){
@@ -326,30 +369,37 @@ function toggleBattleDetails(){
       fiarr:() => {
         battleDetails.name.textContent = 'Fi[arr]';
         battleDetails.description.textContent = '[arr]cane Magic: Unleashes a fury of flames damaging the enemy'
+        battleDetails.details.innerHTML = `${currentMonster.monsterType}.weakness === 'fire'?${currentMonster.monsterType}.health -= 80:${currentMonster.monsterType}.health -= 30`
       },
       blizarrd:() => {
         battleDetails.name.textContent = 'Bliz[arr]d';
         battleDetails.description.textContent = '[arr]cane Magic: Slices with blades of crystal ice damaging the enemy'
+        battleDetails.details.innerHTML = `${currentMonster.monsterType}.weakness === 'ice'?${currentMonster.monsterType}.health -= 80:${currentMonster.monsterType}.health -= 30`
       },
       sparrk:() => {
         battleDetails.name.textContent = 'Sp[arr]k';
         battleDetails.description.textContent = '[arr]cane Magic: Calls forth a powerful bolt of lightning damaging the enemy'
+        battleDetails.details.innerHTML = `${currentMonster.monsterType}.weakness === 'lightning'?${currentMonster.monsterType}.health -= 80:${currentMonster.monsterType}.health -= 30`
       },
       disable:() => {
         battleDetails.name.textContent = 'Disable';
         battleDetails.description.textContent = 'Secret [arr]t: Crushes any barriers that an enemy might have. Increasing the potency of other attacks'
+        battleDetails.details.innerHTML = `Object.assign(${currentMonster.monsterType},{hasBarrier:false})`
       },
       scarrlet:() => {
         battleDetails.name.textContent = 'Sc[arr]let Blade';
         battleDetails.description.textContent = 'Secret [arr]t: Channels the full power of [arr]ay methods into a single sword swing'
+        battleDetails.details.innerHTML = `${currentMonster.monsterType}.health -= 100`
       },
       harrmony:() => {
         battleDetails.name.textContent = 'H[arr]mony';
         battleDetails.description.textContent = 'Secret [arr]t: Draws power from nature to restore health by 50%'
+        battleDetails.details.innerHTML = `let newHealth = hero[health] + (hero.maxHealth * .5);<br><br>hero.health = newHealth>hero.maxHealth?hero.maxHealth:newHealth`
       },
       potion:() => {
         battleDetails.name.textContent = 'Potion';
         battleDetails.description.textContent = 'Restores 120HP'
+        battleDetails.details.innerHTML = `let newHealth = hero[health] + 120;<br><br>hero.health = newHealth>hero.maxHealth?hero.maxHealth:newHealth`
       },
     }[this.dataset.method]()
   }
@@ -361,6 +411,7 @@ function battleAction(){
     attack:() => {
       hero.useAttack(currentMonster);
       secondaryMenu.classList.remove('--active');
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn()
     },
     skill:() => {
@@ -386,42 +437,56 @@ function battleAction(){
         newBattleMessage('Failed to escape.');
         if(currentMonster.monsterHealth > 0) runEnemyTurn()
       }
+      primaryMenu.classList.add('--inactive');
       secondaryMenu.classList.remove('--active');
     },
     fiarr:() => {
       hero.useFiarr(currentMonster);
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn();
       secondaryMenu.classList.remove('--active');
     },
     blizarrd:() => {
       hero.useBlizaard(currentMonster);
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn()
       secondaryMenu.classList.remove('--active');
     },
     sparrk:() => {
       hero.useSparrk(currentMonster);
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn()
       secondaryMenu.classList.remove('--active');
     },
     disable:() => {
       hero.useDisableBarrier(currentMonster);
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn()
       secondaryMenu.classList.remove('--active');
     },
     scarrlet:() => {
       hero.useScarrletBlade(currentMonster);
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn()
       secondaryMenu.classList.remove('--active');
     },
     harrmony:() => {
       hero.useHarrmony(currentMonster);
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn()
       secondaryMenu.classList.remove('--active');
     },
     potion:() => {
       hero.usePotion();
+      primaryMenu.classList.add('--inactive');
       if(currentMonster.monsterHealth > 0) runEnemyTurn()
       secondaryMenu.classList.remove('--active');
+    },
+    ragnarrok:() => {
+      hero.useRagnarrok(currentMonster);
+      primaryMenu.classList.add('--inactive');
+      if(currentMonster.monsterHealth > 0) runEnemyTurn()
+      secondaryMenu.classList.remove('--active')
     }
   }[this.dataset.method]();
 }
@@ -431,6 +496,7 @@ const runEnemyTurn = () => {
   setTimeout(() => {
     currentMonster.useAttack(hero);
     isPlayerturn = true;
+    primaryMenu.classList.remove('--inactive');
   }, 3000);
 }
 
@@ -461,4 +527,17 @@ let now,elapsed;
     requestAnimationFrame(assignSprite)
   }
   assignSprite()
+}
+
+const toggleBravery = () => {
+  if(!braveryMode) {
+    braveryMode = !braveryMode;
+    newBattleMessage(`It's getting desparate, [arr]thur has enabled Bravery!`);
+    attackBtn.textContent = 'Ragn[arr]ok';
+    attackBtn.setAttribute('data-method','ragnarrok');
+  } else {
+    braveryMode = !braveryMode;
+    attackBtn.textContent = 'Attack';
+    attackBtn.setAttribute('data-method','attack');
+  }
 }

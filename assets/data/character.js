@@ -64,11 +64,11 @@ let attackSFX = {
     `url('../../assets/sprites/attacks/attack-disable-6.png')`,
   ],
   attackScarlet:[
-    `url('../../assets/sprites/attacks/attack-scarlet-1.png')`,
-    `url('../../assets/sprites/attacks/attack-scarlet-2.png')`,
-    `url('../../assets/sprites/attacks/attack-scarlet-3.png')`,
-    `url('../../assets/sprites/attacks/attack-scarlet-4.png')`,
-    `url('../../assets/sprites/attacks/attack-scarlet-5.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-1.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-2.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-3.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-4.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-5.png')`,
   ],
   attackHarrmony:[
     `url('../../assets/sprites/attacks/attack-heal-1.png')`,
@@ -82,6 +82,28 @@ let attackSFX = {
     `url('../../assets/sprites/attacks/attack-heal-9.png')`,
     `url('../../assets/sprites/attacks/attack-heal-10.png')`,
     `url('../../assets/sprites/attacks/attack-heal-11.png')`,
+  ],
+  attackRagnarok:[
+    `url('../../assets/sprites/attacks/attack-disable-1.png')`,
+    `url('../../assets/sprites/attacks/attack-disable-2.png')`,
+    `url('../../assets/sprites/attacks/attack-disable-3.png')`,
+    `url('../../assets/sprites/attacks/attack-disable-4.png')`,
+    `url('../../assets/sprites/attacks/attack-disable-5.png')`,
+    `url('../../assets/sprites/attacks/attack-disable-6.png')`,
+    `url('../../assets/sprites/attacks/attack-fiarr-1.png')`,
+    `url('../../assets/sprites/attacks/attack-fiarr-2.png')`,
+    `url('../../assets/sprites/attacks/attack-fiarr-3.png')`,
+    `url('../../assets/sprites/attacks/attack-blizarrd-1.png')`,
+    `url('../../assets/sprites/attacks/attack-blizarrd-2.png')`,
+    `url('../../assets/sprites/attacks/attack-blizarrd-3.png')`,
+    `url('../../assets/sprites/attacks/attack-sparrk-1.png')`,
+    `url('../../assets/sprites/attacks/attack-sparrk-2.png')`,
+    `url('../../assets/sprites/attacks/attack-sparrk-3.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-1.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-2.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-3.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-4.png')`,
+    `url('../../assets/sprites/attacks/attack-scarrlet-5.png')`,
   ],
   ghoul:[
     `url('../../assets/sprites/attacks/attack-ghoul-1.png')`,
@@ -122,4 +144,9 @@ let attackSFX = {
     `url('../../assets/sprites/attacks/attack-hydra-5.png')`,
     `url('../../assets/sprites/attacks/attack-hydra-6.png')`,
   ]
+}
+
+const battleScenes = {
+  cave: `url('../../assets/sprites/stage/battle-scenes/cave.png')`,
+  dungeon: `url('../../assets/sprites/stage/battle-scenes/dungeon.png')`
 }

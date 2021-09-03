@@ -20,7 +20,7 @@ const getBrightness = () => window.getComputedStyle(documentRoot).getPropertyVal
 
 let moving = false;
 let inBattle = false;
-let firstAudioCheck = true;
+let audioManuallyPaused = false;
 let currentMap = 'entrance';
 
 // Previous method for tracking blocked coordinates
@@ -133,17 +133,19 @@ const checkIfNewScene = (x,y) => {
       mapBlocks.forEach(block => block.classList.add(`--${currentMap}`))
     }
     , 2000);
-    // setTimeout(() => window.location.href = '../bossFight/bossFight.html', 1000);
+    currentMap === 'dungeon'?documentRoot.style.setProperty('--battleScene',battleScenes.dungeon):documentRoot.style.setProperty('--battleScene',battleScenes.cave);
   }
 };
 
 const checkForRandomEncounter = () => {
   if (inBattle) return;
-  console.count('encounterCheck');
   const encounterRate = .03;
   // const encounterRate = .03;
   const encounterCheck = Math.random();
   const monsterAppears = encounterCheck < encounterRate
+  console.log(`encounterCheck`, encounterCheck)
+  console.log(`encounterRate`, encounterRate)
+  console.log(`monsterAppears`, monsterAppears)
   if (monsterAppears) {
     startBattle();
   }
@@ -219,13 +221,8 @@ const moveControl = { // up arrow
     x = `${parseFloat(x)-4}%`
     checkIfNewScene(x,y);
   },
-  32:({x,y},heroPos) => { // space bar
+  32:({x,y}) => { // space bar
     controls.space.classList.add('--active');
-    if (firstAudioCheck && audioTrack.paused) {
-      audioTrack.play();
-      audioBtn.innerText = "🔊"
-      firstAudioCheck = false;
-    }
     console.log(x,y);
     if (!!loadedInteraction) loadedInteraction(x.slice(0,2))
   }
@@ -243,6 +240,11 @@ function moveCharacter(e){
   moveControl[e.keyCode](axis, getHeroPos());
   checkForInteractions(axis);
   console.log('x',axis.x,'y',axis.y);
+  if (audioTrack[0].paused && !audioManuallyPaused) {
+    audioTrack[0].play();
+    audioBtn.innerText = "🔊"
+    // firstAudioCheck = false;
+  }
 }
 
 const moveRelease = {
