@@ -82,6 +82,9 @@
           <div class="player__health">
             <div class="player__health-bar"></div>
           </div>
+          <div class="player__ap">
+            <div class="player__ap-bar"></div>
+          </div>
         </div>
       </div>
       <section class="battle-menu">
@@ -101,24 +104,15 @@
             </button>
           </article>
           <article class="battle-menu__modal battle-menu__secondary">
-            <button class="battle-menu__option">
-              Potion
-            </button>
-            <button class="battle-menu__option">
-              Restore
-            </button>
           </article>
        </div>
         <article class="battle-menu__details">
-          <h4 class="battle-menu__effect-name">
-            Potion
-          </h4>
-          <p class="battle-menu__effect-description">
-            Restores your health by 60hp!
-          </p>
-          <p class="battle-menu__effect-details">
-            Does stuff...
-          </p>
+          <div class="battle-menu__wrapper">
+            <h4 class="battle-menu__effect-name"></h4>
+            <h4 class="battle-menu__effect-ap"></h4>
+          </div>
+          <p class="battle-menu__effect-description"></p>
+          <p class="battle-menu__effect-details"></p>
         </article>        
       </section>
     </aside>
@@ -128,6 +122,19 @@
     </aside>
     <audio src="../../assets/audio/bensound-ofeliasdream.mp3" loop></audio>
     <audio src="../../assets/audio/bensound-evolution.mp3" loop></audio>
+    <audio data-effect="fire" src="../../assets/audio/sound-effect-fire.mp3"></audio>
+    <audio data-effect="ice" src="../../assets/audio/sound-effect-ice.mp3"></audio>
+    <audio data-effect="lightning" src="../../assets/audio/sound-effect-lightning.mp3"></audio>
+    <audio data-effect="break" src="../../assets/audio/sound-effect-break.mp3"></audio>
+    <audio data-effect="slice" src="../../assets/audio/sound-effect-slice.mp3"></audio>
+    <audio data-effect="swing" src="../../assets/audio/sound-effect-swing.mp3"></audio>
+    <audio data-effect="heal" src="../../assets/audio/sound-effect-heal.mp3"></audio>
+    <audio data-effect="absorb" src="../../assets/audio/sound-effect-absorb.mp3"></audio>
+    <audio data-effect="crunch" src="../../assets/audio/sound-effect-crunch.mp3"></audio>
+    <audio data-effect="bird" src="../../assets/audio/sound-effect-bird.mp3"></audio>
+    <audio data-effect="inferno" src="../../assets/audio/sound-effect-inferno.mp3"></audio>
+    <audio data-effect="ghoul" src="../../assets/audio/sound-effect-ghoul.mp3"></audio>
+    <audio data-effect="confirm" src="../../assets/audio/sound-effect-confirm.mp3"></audio>
   </main>
   <script src="../../utils/debounce.js"></script>
   <script src="./battleLogic.js"></script>

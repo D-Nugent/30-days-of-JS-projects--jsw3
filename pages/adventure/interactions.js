@@ -5,19 +5,56 @@ let loadedInteraction;
 let instantEvent;
 
 const interactions ={
-  entrance:[],
-  depths:[],
+  entrance:[
+    ['57%','70%','left',()=>itemEvent('Potion',[0,1]),false],
+    ['61%','70%','left',()=>itemEvent('Potion',[0,1]),false],
+    ['81%','22%','right',()=>itemEvent('Restore',[2,3,4,5]),false],
+    ['85%','22%','right',()=>itemEvent('Restore',[2,3,4,5]),false],
+    ['93%','14%','down',()=>itemEvent('Restore',[2,3,4,5]),false],
+    ['93%','18%','down',()=>itemEvent('Restore',[2,3,4,5]),false],
+  ],
+  depths:[
+    ['6.5%','85%','left',()=>itemEvent('Restore',[0,1]),false],
+    ['2.5%','85%','left',()=>itemEvent('Restore',[0,1]),false],
+    ['74.5%','29%','right',()=>scriptEvent(['Hmm... I bet I could jump this...then again... better not.'],true),false],
+    ['54.5%','9%','right',()=>scriptEvent(['Woah, what is this? A dungeon?'],true),true],
+  ],
   dungeon:[
+    ['66%','46%','right',()=>itemEvent('Restore',[0]),false],
     ['18%','58%','right',()=>ladderEvent('down'),false],
     ['30%','66%','left',()=>ladderEvent('up'),false],
-    ['46%','58%','up',()=>bossWarningEvent(),false],
-    ['50%','58%','up',()=>bossWarningEvent(),false],
-    ['46%','54%','up',()=>bossWarningEvent(),false],
-    ['50%','54%','up',()=>bossWarningEvent(),false],
+    ['46%','42%','up',()=>bossWarningEvent(),false,],
+    ['50%','42%','up',()=>bossWarningEvent(),false,],
+    ['46%','46%','up',()=>bossWarningEvent(),false,],
+    ['50%','46%','up',()=>bossWarningEvent(),false,],
     ['46%','34%','up',()=>bossFightEvent(),true],
     ['50%','34%','up',()=>bossFightEvent(),true],
   ]
 } 
+
+const scriptEvent = (msgArr,reset) => {
+  heroMsg.innerHTML = msgArr.map(msg => {
+    return `
+    <p>${msg}</p>
+    `
+  }).join('');
+  if (reset) {
+    setTimeout(() => {
+      heroMsg.innerHTML = `
+      <p>Let's continue on.</p>
+      `
+    }, 3000);
+  }
+}
+
+const itemEvent = (itemType,arrofIndexes) => {
+  playerItems.push(itemType);
+  soundEffects.confirm.play();
+  scriptEvent([`Huh? What's this?`,`Nice a '${itemType}' item, this will help!`],true)
+  arrofIndexes.forEach(index => {
+    interactions[currentMap][index] = [];
+  })
+}
 
 const ladderEvent = (direction) => {
   sceneChange(1000)
@@ -35,28 +72,20 @@ const ladderEvent = (direction) => {
 
 const bossWarningEvent = () => {
   const bossMapBlock = document.querySelector('.map__block--1.--dungeon');
-  heroMsg.innerHTML = `
-  <p>Wait a minute, is that... it's the sword of [arr]gus!</p>
-  <p>But... what's this feeling? I better proceed with caution, or at least make sure I'm ready for whatever comes at me.</p>
-  `
+  scriptEvent([
+    `Wait a minute, is that... it's the sword of [arr]gus!`,
+     `But... what's this feeling? I better proceed with caution, or at least make sure I'm ready for whatever comes at me.`
+    ],false)
   bossMapBlock.style.top = '0%';
+  interactions[currentMap][3] = [];
+  interactions[currentMap][4] = [];
+  interactions[currentMap][5] = [];
+  interactions[currentMap][6] = [];
 }
 
 const bossFightEvent = () => {
   startBattle(true);
 }
-
-const knightEvent = () => {
-  console.log('Yoohoo!');
-  heroMsg.innerHTML = `
-  <p>Wait a minute, there's something inside this visor... another scroll!</p>
-  <p>It reads: Very impressive, that was quick. Perhaps you're not as idiotic as I thought. You might even be smart enough to quit while you're ahead.</p>
-  <p>Next clue:</p>
-  <em>"An emerald in a sea of crimson. The source of all knowledge lies within."</em>
-  `
-  interactions.push(['85%','30%','left',()=>bookEvent()],['90%','30%','left',()=>bookEvent()])
-}
-
 
 function checkForInteractions({x,y}){
   let indexOfInteraction;

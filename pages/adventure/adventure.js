@@ -137,14 +137,14 @@ const checkIfNewScene = (x,y) => {
   }
 };
 
-const checkForRandomEncounter = () => {
+const checkForRandomEncounter = (e) => {
+  if (e.keyCode === 32) return;
   if (inBattle) return;
   const encounterRate = .03;
-  // const encounterRate = .03;
   const encounterCheck = Math.random();
   const monsterAppears = encounterCheck < encounterRate
-  console.log(`encounterCheck`, encounterCheck)
   console.log(`encounterRate`, encounterRate)
+  console.log(`encounterCheck`, encounterCheck)
   console.log(`monsterAppears`, monsterAppears)
   if (monsterAppears) {
     startBattle();
@@ -243,7 +243,6 @@ function moveCharacter(e){
   if (audioTrack[0].paused && !audioManuallyPaused) {
     audioTrack[0].play();
     audioBtn.innerText = "🔊"
-    // firstAudioCheck = false;
   }
 }
 

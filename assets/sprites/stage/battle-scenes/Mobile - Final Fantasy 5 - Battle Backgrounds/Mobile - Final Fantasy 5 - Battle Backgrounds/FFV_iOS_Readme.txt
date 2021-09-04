@@ -1,1 +1,0 @@
-Credit Puggsoy if used.
